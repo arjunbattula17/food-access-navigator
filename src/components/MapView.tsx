@@ -12,16 +12,18 @@ interface Props {
 export default function MapView({ all, bestId, selectedId, onSelect }: Props) {
   const [openId, setOpenId] = useState<string | null>(null)
 
-  const bounds = useMemo(() => {
-    const lats = all.map((r) => r.location.lat)
-    const lngs = all.map((r) => r.location.lng)
-    return {
-      minLat: Math.min(...lats) - 0.01,
-      maxLat: Math.max(...lats) + 0.01,
-      minLng: Math.min(...lngs) - 0.01,
-      maxLng: Math.max(...lngs) + 0.01,
-    }
-  }, [all])
+  // Fixed bbox around the Houston metro area (centered near 29.7507, -95.4106)
+  // so pins line up with the real OpenStreetMap tiles below them.
+  const bounds = useMemo(
+    () => ({
+      minLat: 29.6,
+      maxLat: 30.04,
+      minLng: -95.62,
+      maxLng: -95.2,
+    }),
+    [],
+  )
+  const osmSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${bounds.minLng}%2C${bounds.minLat}%2C${bounds.maxLng}%2C${bounds.maxLat}&layer=mapnik`
 
   function pos(lat: number, lng: number) {
     const x = ((lng - bounds.minLng) / (bounds.maxLng - bounds.minLng)) * 100
@@ -33,16 +35,13 @@ export default function MapView({ all, bestId, selectedId, onSelect }: Props) {
 
   return (
     <div className="card relative overflow-hidden">
-      <div
-        className="relative h-64 w-full sm:h-80"
-        style={{
-          background:
-            'linear-gradient(0deg, var(--color-brand-50) 0%, #eef4f6 100%)',
-          backgroundImage:
-            'linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-        }}
-      >
+      <div className="relative h-64 w-full sm:h-80">
+        <iframe
+          title="OpenStreetMap of the Houston area"
+          src={osmSrc}
+          className="absolute inset-0 h-full w-full border-0"
+          loading="lazy"
+        />
         {all.map((r) => {
           const loc = r.location
           const isBest = loc.id === bestId
