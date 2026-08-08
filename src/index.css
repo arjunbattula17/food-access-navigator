@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-ink-900: #0b1f33;
+  --color-ink-700: #1c3652;
+  --color-ink-500: #3d5872;
+  --color-ink-300: #7b93a8;
+
+  --color-brand-700: #0d4f6b;
+  --color-brand-600: #0f6b8c;
+  --color-brand-500: #1487ab;
+  --color-brand-100: #e3f2f6;
+  --color-brand-50: #f2f9fb;
+
+  --color-good-600: #157a4a;
+  --color-good-100: #e2f5ea;
+  --color-warn-600: #a4650a;
+  --color-warn-100: #fdf1de;
+  --color-bad-600: #b9312a;
+  --color-bad-100: #fbe6e4;
+
+  --color-surface: #fdfeff;
+  --color-canvas: #f5f7f9;
+  --color-border: #e2e8ee;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(20, 135, 171, 0.35); }
+  100% { box-shadow: 0 0 0 12px rgba(20, 135, 171, 0); }
+}
+.pulse {
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fade-up 0.35s ease-out both;
+}
+
+@keyframes bar-grow {
+  from { width: 0%; }
+}
+.bar-grow {
+  animation: bar-grow 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
